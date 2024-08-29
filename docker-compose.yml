@@ -1,0 +1,35 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: cv_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: cvdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: root
+    ports:
+      - "3309:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - cvnet
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: cvphpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "6060:80"
+    depends_on:
+      - mysql
+    networks:
+      - cvnet
+
+volumes:
+  mysql_data:
+
+networks:
+  cvnet:
